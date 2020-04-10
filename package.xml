@@ -41,4 +41,7 @@
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>visualization_msgs</exec_depend>
 
+  <export>
+    <rviz plugin="${prefix}/rviz_command_button.xml"/>
+  </export>
 </package>
