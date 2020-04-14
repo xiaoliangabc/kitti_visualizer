@@ -34,8 +34,8 @@ CommandButton::CommandButton(QWidget* parent) : rviz::Panel(parent) {
   frame_layout->addWidget(new QLabel("Frame string:"));
   output_frame_editor_ = new QLineEdit;
   frame_layout->addWidget(output_frame_editor_);
-  output_frame_editor_->setPlaceholderText("um_000000");
-  output_frame_editor_->setText("um_000000");
+  output_frame_editor_->setPlaceholderText("000000");
+  output_frame_editor_->setText("000000");
   layout->addLayout(frame_layout);
   connect(output_frame_editor_, SIGNAL(returnPressed()), this,
           SLOT(UpdateFrame()));
@@ -44,7 +44,7 @@ CommandButton::CommandButton(QWidget* parent) : rviz::Panel(parent) {
 
   // Publisher
   command_publisher_ =
-      nh_.advertise<std_msgs::String>("/kitti_visualizer/button_command", 1);
+      nh_.advertise<std_msgs::String>("/kitti_visualizer/command_button", 1);
 }
 
 void CommandButton::ButtonResponse(QString command) {

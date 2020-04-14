@@ -1,0 +1,18 @@
+<launch>
+  <arg name="data_path" default="/media/wxl/WXLPassport/Data/kitti/dataset/object/"/>
+  <arg name="dataset" default="training"/>
+  <arg name="frame_size" default="7481"/>
+  <arg name="current_frame" default="0"/>
+
+  <!-- Object visualizer -->
+  <node pkg="kitti_visualizer" type="object_visualizer_node" name="object_visualizer_node" output="screen" required="true">
+    <param name="data_path" type="str" value="$(arg data_path)" />
+    <param name="dataset" type="str" value="$(arg dataset)" />
+    <param name="frame_size" type="int" value="$(arg frame_size)" />
+    <param name="current_frame" type="int" value="$(arg current_frame)" />
+  </node>
+
+  <!-- Rviz -->
+  <node pkg="rviz" name="rviz" type="rviz" args="-d $(find kitti_visualizer)/rviz/object_visualizer.rviz" />
+
+</launch>

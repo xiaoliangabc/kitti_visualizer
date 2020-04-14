@@ -1,5 +1,5 @@
-#ifndef KITTI_VISUALIZE_COMMON_RVIZ_COMMAND_BUTTON_H_
-#define KITTI_VISUALIZE_COMMON_RVIZ_COMMAND_BUTTON_H_
+#ifndef KITTI_VISUALIZER_COMMON_RVIZ_COMMAND_BUTTON_H_
+#define KITTI_VISUALIZER_COMMON_RVIZ_COMMAND_BUTTON_H_
 
 #include <ros/package.h>
 #include <ros/ros.h>
@@ -63,4 +63,4 @@ class CommandButton : public rviz::Panel {
 
 }  // namespace kitti_visualizer
 
-#endif  // KITTI_VISUALIZE_COMMON_RVIZ_COMMAND_BUTTON_H_
+#endif  // KITTI_VISUALIZER_COMMON_RVIZ_COMMAND_BUTTON_H_
