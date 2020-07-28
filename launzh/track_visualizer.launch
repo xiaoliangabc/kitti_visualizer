@@ -1,0 +1,18 @@
+<launch>
+  <arg name="data_path" default="/media/wxl/WXLPassport/Data/kitti/dataset/tracking/"/>
+  <arg name="dataset" default="training"/>
+  <arg name="scene" default="0020"/>
+  <arg name="current_frame" default="0"/>
+
+  <!-- Object visualizer -->
+  <node pkg="kitti_visualizer" type="track_visualizer_node" name="track_visualizer_node" output="screen" required="true">
+    <param name="data_path" type="str" value="$(arg data_path)" />
+    <param name="dataset" type="str" value="$(arg dataset)" />
+    <param name="scene" type="str" value="$(arg scene)" />
+    <param name="current_frame" type="int" value="$(arg current_frame)" />
+  </node>
+
+  <!-- Rviz -->
+  <node pkg="rviz" name="rviz" type="rviz" args="-d $(find kitti_visualizer)/rviz/track_visualizer.rviz" />
+
+</launch>

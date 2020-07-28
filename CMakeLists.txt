@@ -30,10 +30,13 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(object_visualizer_node src/object_visualizer/object_visualizer.cc src/object_visualizer/object_visualizer_node.cc)
+add_executable(track_visualizer_node src/track_visualizer/track_visualizer.cc src/track_visualizer/track_visualizer_node.cc)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(object_visualizer_node ${catkin_LIBRARIES})
 target_link_libraries(object_visualizer_node ${OpenCV_LIBRARIES})
+target_link_libraries(track_visualizer_node ${catkin_LIBRARIES})
+target_link_libraries(track_visualizer_node ${OpenCV_LIBRARIES})
 
 ## This setting causes Qt's "MOC" generation to happen automatically
 set(CMAKE_AUTOMOC ON)
