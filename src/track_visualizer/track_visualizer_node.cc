@@ -13,12 +13,15 @@ int main(int argc, char *argv[]) {
 
   ros::Rate loop_rate(20);
   int frame = 0;
-  while (ros::ok()) {
-    track_visualizer.Visualizer(frame);
-    frame = (++frame) % 382;
+  // while (ros::ok()) {
+  //   track_visualizer.Visualizer(frame);
+  //   frame = (++frame) % frame_size;
 
-    loop_rate.sleep();
-  }
+  //   loop_rate.sleep();
+  // }
+
+  track_visualizer.Visualizer(frame);
+  ros::spin();
 
   return 0;
 }

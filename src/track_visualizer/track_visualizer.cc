@@ -21,6 +21,8 @@ TrackVisualizer::TrackVisualizer(ros::NodeHandle nh, ros::NodeHandle pnh)
       nh_.advertise<sensor_msgs::Image>("kitti_visualizer/object/image", 2);
   pub_bounding_boxes_ = nh_.advertise<jsk_recognition_msgs::BoundingBoxArray>(
       "kitti_visualizer/object/bounding_boxes", 2);
+  pub_tracking_result_ = nh_.advertise<jsk_recognition_msgs::BoundingBoxArray>(
+      "kitti_visualizer/object/tracking_result", 2);
 }
 
 void TrackVisualizer::Visualizer(const int& frame) {
@@ -36,7 +38,10 @@ void TrackVisualizer::Visualizer(const int& frame) {
   ImageVisualizer(file_prefix.str(), pub_image_);
 
   // Visualize 3D bounding boxes
-  BoundingBoxesVisualizer(file_prefix.str(), pub_bounding_boxes_);
+  BoundingBoxesVisualizer(file_prefix.str(), "/label_02/", pub_bounding_boxes_);
+
+  // Visualize tracking result
+  BoundingBoxesVisualizer(file_prefix.str(), "/AB3DMOT/", pub_tracking_result_);
 }
 
 void TrackVisualizer::PointCloudVisualizer(const std::string& file_prefix,
@@ -61,7 +66,7 @@ void TrackVisualizer::ImageVisualizer(const std::string& file_prefix,
   cv::Mat raw_image = cv::imread(image_file_name.c_str());
 
   // Draw 2D bounding boxes in image
-  Draw2DBoundingBoxes(file_prefix, raw_image);
+  Draw2DBoundingBoxes(file_prefix, "/label_02/", raw_image);
 
   // Publish image
   sensor_msgs::ImagePtr raw_image_msg =
@@ -71,9 +76,10 @@ void TrackVisualizer::ImageVisualizer(const std::string& file_prefix,
 }
 
 void TrackVisualizer::Draw2DBoundingBoxes(const std::string& file_prefix,
+                                          const std::string& folder,
                                           cv::Mat& raw_image) {
   // Read bounding boxes data
-  std::vector<std::vector<float>> tracks = ParseTracks(file_prefix);
+  std::vector<std::vector<float>> tracks = ParseTracks(file_prefix, folder);
 
   // Draw bounding boxes in image
   for (const auto track : tracks) {
@@ -84,9 +90,10 @@ void TrackVisualizer::Draw2DBoundingBoxes(const std::string& file_prefix,
 }
 
 void TrackVisualizer::BoundingBoxesVisualizer(const std::string& file_prefix,
+                                              const std::string& folder,
                                               const ros::Publisher publisher) {
   // Read bounding boxes data
-  std::vector<std::vector<float>> tracks = ParseTracks(file_prefix);
+  std::vector<std::vector<float>> tracks = ParseTracks(file_prefix, folder);
 
   // Transform bounding boxes to jsk_recognition_msgs
   jsk_recognition_msgs::BoundingBoxArray bounding_box_array =
@@ -94,7 +101,7 @@ void TrackVisualizer::BoundingBoxesVisualizer(const std::string& file_prefix,
 
   // Publish bounding boxes
   bounding_box_array.header.frame_id = "base_link";
-  pub_bounding_boxes_.publish(bounding_box_array);
+  publisher.publish(bounding_box_array);
 }
 
 jsk_recognition_msgs::BoundingBoxArray TrackVisualizer::TransformBoundingBoxes(
@@ -139,11 +146,11 @@ jsk_recognition_msgs::BoundingBoxArray TrackVisualizer::TransformBoundingBoxes(
 }
 
 std::vector<std::vector<float>> TrackVisualizer::ParseTracks(
-    const std::string& file_prefix) {
+    const std::string& file_prefix, const std::string& folder) {
   // Open bounding boxes file
   std::string tracks_file_name;
   if (dataset_ == "training") {
-    tracks_file_name = data_path_ + dataset_ + "/label_02/" + scene_ + ".txt";
+    tracks_file_name = data_path_ + dataset_ + folder + scene_ + ".txt";
   } else if (dataset_ == "testing") {
     tracks_file_name =
         data_path_ + dataset_ + "/results/" + file_prefix + ".txt";

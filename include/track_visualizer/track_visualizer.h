@@ -49,10 +49,12 @@ class TrackVisualizer {
                        const ros::Publisher publisher);
 
   // Draw 2D bounding boxes in image
-  void Draw2DBoundingBoxes(const std::string& file_prefix, cv::Mat& raw_image);
+  void Draw2DBoundingBoxes(const std::string& file_prefix,
+                           const std::string& folder, cv::Mat& raw_image);
 
   // Visualize 3D bounding boxes
   void BoundingBoxesVisualizer(const std::string& file_prefix,
+                               const std::string& folder,
                                const ros::Publisher publisher);
 
   // Transform 3D bounding boxes form camera to velodyne
@@ -61,7 +63,8 @@ class TrackVisualizer {
       const std::string& file_prefix);
 
   // Parse detections from file
-  std::vector<std::vector<float>> ParseTracks(const std::string& file_prefix);
+  std::vector<std::vector<float>> ParseTracks(const std::string& file_prefix,
+                                              const std::string& folder);
 
   // Subscribe command from Rviz
   void CommandButtonCallback(const std_msgs::String::ConstPtr& in_command);
@@ -77,6 +80,7 @@ class TrackVisualizer {
   ros::Publisher pub_point_cloud_;
   ros::Publisher pub_image_;
   ros::Publisher pub_bounding_boxes_;
+  ros::Publisher pub_tracking_result_;
 
   // Object data path
   std::string data_path_;
